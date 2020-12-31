@@ -2,9 +2,9 @@
 
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 
-    <a  class="btn btn-secondary btn-sm active " role="button" aria-pressed="true"
+    <a  href="/index" class="btn btn-secondary btn-sm active " role="button" aria-pressed="true"
         style="position:absolute; right:10%;top:60px;z-index:16;border-radius: 5rem; ">
-     <span class="font-weight-bold">跳过</span>
+      <span class="font-weight-bold ">跳过</span>
     </a>
     <div class="carousel-indicators" style="position: fixed">
       <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
