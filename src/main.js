@@ -7,6 +7,10 @@ import 'bootstrap'
 import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
+import axios from 'axios'
+
+axios.defaults.baseURL='http://192.168.10.10/'
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

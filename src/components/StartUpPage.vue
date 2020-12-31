@@ -13,31 +13,40 @@
     </div>
 
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="../assets/s1.jpg" class="d-block w-100 img-responsive center-block" alt="..." >
+<!--      class="carousel-item active"-->
+<!--      -->
+      <div  v-for="(value, key) in bannerList" :class='[bannerActive==key ?"active":"","carousel-item"]' >
+        <img :src="['../static/'+value.image_src]" class="d-block w-100 img-responsive center-block" alt="..." >
       </div>
-      <div class="carousel-item">
-        <img src="../assets/s2.jpg" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="../assets/s3.jpg" class="d-block w-100" alt="...">
-      </div>
+
+
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
+
   </div>
 </template>
 
 <script>
-
+  import axios from 'axios'
     export default {
-        name: "StartUpPage"
+      name: "StartUpPage",
+      data(){
+         return {
+           bannerList: null,
+           bannerActive:1
+         }
+        },
+      mounted () {
+
+        axios
+          .get('api/banners?type=onboarding')
+          .then(response => (
+             this.bannerList=response.data.data.list
+
+          ))
+          .catch(function (error) { // 请求失败处理
+            console.log(error);
+          });
+      }
     }
 </script>
 
