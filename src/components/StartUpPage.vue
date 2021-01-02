@@ -13,8 +13,7 @@
     </div>
 
     <div class="carousel-inner">
-<!--      class="carousel-item active"-->
-<!--      -->
+
       <div  v-for="(value, key) in bannerList" :class='[bannerActive==key ?"active":"","carousel-item"]' >
         <img :src="['../static/'+value.image_src]" class="d-block w-100 img-responsive center-block" alt="..." >
       </div>
