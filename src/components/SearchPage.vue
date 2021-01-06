@@ -294,13 +294,7 @@
   }
 </script>
 <style scoped="">
-  .notice_count {
-    position:absolute;
-    padding-left: 53%;
-    z-index: 1;
-    background-color:rgba(0,0,0,0);
 
-  }
   .msg {
     z-index:2;
     /*background-color: red;*/
@@ -317,22 +311,6 @@
 
 
   }
-  ul{
-    width: 100%;
-    margin:0;
-    padding:0;
-    list-style:none;
-    align-content: center;
-    overflow:hidden;
-  }
-  ul li{
 
-    margin:0;
-    padding:0;
-    border:none;
-    background-color: #F7F7F7
-
-
-  }
 
 </style>
