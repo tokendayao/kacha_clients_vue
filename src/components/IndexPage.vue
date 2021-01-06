@@ -1,10 +1,7 @@
 <template>
   <div id="IndexPage">
-    <div id="header_div" class="container" style="margin-top: 5px">
-      <div class="col-xl-12 text-left  " style="padding-left:0;">
-        <span class="badge badge-warning">Kacha</span>
-      </div>
-    </div>
+    <CommonHeader></CommonHeader>
+
     <!--  搜索框 BANNER START   -->
     <div id="search_div" class="container h-100" style="margin-top: 10px">
       <div class="row">
@@ -57,39 +54,29 @@
     </div>
     <!--  圈子列表 END  -->
 
-
-
-    <!--  底部   start-->
     <div class="container" style="border-top: 1px gray solid ;  z-index:1;position:fixed;bottom:0;margin-bottom: 0;">
       <!-- 信息提示 START-->
       <div class="msg" id='msg'>
       </div>
       <!-- 信息提示 END-->
 
-
-
-      <div id="bottom_div" class="row w-100 " style=" background-color: #F7F7F7; z-index:1;position:fixed;bottom:0;margin-bottom: 0;">
-
-        <nav class="w-100  " style="">
-          <ul id="group_list_ul" class="w-100 list-group list-group-horizontal-sm text-center" style="flex-direction: row;margin-left: 10px;padding-top: 0">
-            <li class="list-group-item " style="width:33%"><a class="nav-link" href="/index">圈儿</a></li>
-            <div id="notice_count" class="badge badge-light notice_count">4</div>
-
-            <li class="list-group-item  " style="width:33%"><a class="nav-link" href="#" data-content="详情详情详情">信儿 </a></li>
-            <li class="list-group-item  " style="width:33%"><a class="nav-link " href="#">我的</a></li>
-          </ul>
-        </nav>
-      </div>
+      <common-bottom></common-bottom>
     </div>
+
+    <!--  底部   start-->
+
     <!--  底部  end -->
   </div>
 </template>
 <script>
   import $ from 'jquery'
   import axios from "axios";
+  import CommonHeader from "@/components/CommonHeader";
+  import CommonBottom from "@/components/CommonBottom";
 
   export default {
     name: "IndexPage",
+    components: {CommonHeader,CommonBottom},
     data(){
       return {
         lastTime:null,
