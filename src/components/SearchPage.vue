@@ -26,10 +26,6 @@
       <div class="row" id="errorTip" style="position: relative;z-index: 2;">
 
 
-
-
-
-
       </div>
 
     </div>
@@ -254,7 +250,7 @@
                 this.groupCount = 0;
                 this.groupTotal = 0;
 
-                $('#errorTip').append('     <div id="msg_id_2" class="col-xl-12">  <span class="help-block alert-warning " > 没找着~ </span></div>');
+                $('#errorTip').append('     <div id="msg_id_2" class="col-xl-12">  <span class="alert alert-warning " > 没找着~ </span></div>');
                 this.removeHtml($("#msg_id_2"))
 
               }
@@ -325,14 +321,14 @@
   .msg {
     z-index:2;
     /*background-color: red;*/
-    width:  100%;
+    width:  40%;
     height: 50px;
 
     /*margin-bottom:0px;*/
     position: absolute;
     /*left: 140px;*/
     /*top: 0;*/
-    right: 0;
+    right: 30%;
     bottom: 50px;
     pointer-events: none;
 

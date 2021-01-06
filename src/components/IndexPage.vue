@@ -28,10 +28,7 @@
                 <img :id="['image_'+key]" :src="['../static/'+value.image_src]" class="h-100  w-100 img-fluid center-block" alt="..." />
 
               </div>
-              <div id="occupation_banner" style="visibility: hidden" v-if="bannerList" >
-                <img src="../assets/occupation_banner.jpg"   class="h-100  w-100 img-fluid center-block" alt="..." />
 
-              </div>
 
             </div>
           </div>
@@ -40,9 +37,9 @@
 
     </div>
     <!--  搜索框 BANNER END   -->
-    <!--  圈子列表 START  :style="style_lavender[Math.floor(Math.random()*6 + 1)]"-->
-    <div id="group_list" class="container" v-if="groupCount" :style="{'position':'relative','overflow':'auto','margin-top':'10px','height':curHeight+'px'}">
-      <div v-if="(n%2)!=0" class="row" v-for="n in  groupCount " style="position:relative;flex-wrap: nowrap;margin-top: 15px; " data-spy="scroll">
+    <!--  圈子列表 START  :style="{'position':'relative','overflow':'auto','margin-top':'10px','height':curHeight+'px'}"-->
+    <div id="group_list" class="container " v-if="groupCount"  style="position: relative;margin-bottom: 25px">
+      <div v-if="(n%2)!=0" class="row" v-for="n in  groupCount " style="position:relative;flex-wrap: nowrap;margin-top: 10px; " >
         <div class="col-xl-6  text-center" v-if="(n%2)!=0 &amp;&amp; (k&gt;=n)  " v-for="k in n+1" >
           <div v-if="k&lt;(groupCount+1)" class="m-auto card text-white  mb-3" :style="{'max-width': '18rem','background-color':style_card[Math.floor(Math.random()*8 + 1)]}">
             <div class="card-header">
@@ -137,19 +134,12 @@
         .then((response) => {
           if (response.data.code == "200") {
 
-              var h = document.documentElement.clientHeight || document.body.clientHeight;
 
-              this.curHeight =h -$('#header_div').height()-$('#search_div').height()-$('#bottom_div').height(); //减去页面上固定高度height
              this.bannerList = response.data.data.list
-
-              console.log("mounted");
-              console.log("search_div:->"+$('#search_div').height());
-              console.log("curHeight:->"+this.curHeight);
-
 
           }
 
-          $("#occupation_banner").remove();
+
 
         })
         .catch(function (error) { // 请求失败处理
