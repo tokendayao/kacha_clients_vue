@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Product from '@/components/Product'   // add
 import StartUpPage from '@/components/StartUpPage'   // add
 import IndexPage from '@/components/IndexPage'   // add
+import SearchPage from '@/components/SearchPage'   // add
 
 Vue.use(Router)
 
@@ -12,21 +13,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'StartUpPage',
+      component: StartUpPage
     }, {
       path: '/product',
       name: 'Product',
       component: Product
-    }, {
-      path: '/kacha',
-      name: 'StartUpPage',
-      component: StartUpPage
     },
     {
       path: '/index',
       name: 'IndexPage',
       component: IndexPage
+    },
+    {
+      path: '/search',
+      name: 'SearchPage',
+      component: SearchPage
     }
   ]
 })

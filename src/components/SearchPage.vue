@@ -1,8 +1,12 @@
 <template>
-  <div id="IndexPage">
+  <div id="SearchPage">
     <div id="header_div" class="container" style="margin-top: 5px">
       <div class="col-xl-12 text-left  " style="padding-left:0;">
-        <span class="badge badge-warning">Kacha</span>
+
+        <a  href="/index"  role="button" aria-pressed="true" >
+          <span class="badge badge-warning" >Kacha</span>
+        </a>
+
       </div>
     </div>
     <!--  搜索框 BANNER START   -->
@@ -13,35 +17,25 @@
             <div class="input-group-prepend">
               <span class="input-group-text img-fluid"><img src="../assets/icons/search.svg" alt="" title="Bootstrap" @click.prevent="searchGroups($event)" /></span>
             </div>
-            <input type="search" class="form-control" placeholder="搜索圈儿" v-model="keyword" @click.prevent="searchGroups($event)" />
+
+            <input id="keyword" type="search" class="form-control" placeholder="搜索圈儿" v-model="keyword"  @keyup.enter.prevent="searchGroups($event)" />
+
           </div>
         </div>
       </div>
+      <div class="row" id="errorTip" style="position: relative;z-index: 2;">
 
 
-      <div id="search_banner" class="row h-100 " >
-        <div class="col-xl-12">
-          <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner " ref="aaa">
 
-               <div v-for="(value,key)  in bannerList" :class=" [bannerActive==key?'active':'','carousel-item']" >
-                <img :id="['image_'+key]" :src="['../static/'+value.image_src]" class="h-100  w-100 img-fluid center-block" alt="..." />
 
-              </div>
-              <div id="occupation_banner" style="visibility: hidden" v-if="bannerList" >
-                <img src="../assets/occupation_banner.jpg"   class="h-100  w-100 img-fluid center-block" alt="..." />
 
-              </div>
 
-            </div>
-          </div>
-        </div>
       </div>
 
     </div>
     <!--  搜索框 BANNER END   -->
-    <!--  圈子列表 START  :style="style_lavender[Math.floor(Math.random()*6 + 1)]"-->
-    <div id="group_list" class="container" v-if="groupCount" :style="{'position':'relative','overflow':'auto','margin-top':'10px','height':curHeight+'px'}">
+    <!--  圈子列表 START v-if="groupCount" :style="style_lavender[Math.floor(Math.random()*6 + 1)]"-->
+    <div id="group_list" class="container"  :style="{'position':'relative','overflow':'auto','margin-top':'10px','height':curHeight+'px'}">
       <div v-if="(n%2)!=0" class="row" v-for="n in  groupCount " style="position:relative;flex-wrap: nowrap;margin-top: 15px; " data-spy="scroll">
         <div class="col-xl-6  text-center" v-if="(n%2)!=0 &amp;&amp; (k&gt;=n)  " v-for="k in n+1" >
           <div v-if="k&lt;(groupCount+1)" class="m-auto card text-white  mb-3" :style="{'max-width': '18rem','background-color':style_card[Math.floor(Math.random()*8 + 1)]}">
@@ -92,7 +86,7 @@
   import axios from "axios";
 
   export default {
-    name: "IndexPage",
+    name: "SearchPage",
     data(){
       return {
         lastTime:null,
@@ -107,15 +101,13 @@
         randStyleSeed:0,
         curHeight:0,
         scrollPage:1,
+        scrollSearch:0,
+
         style_card:['#ffb3d9','#0077b3','#40bf80','#c68c53','#ff3377','#33ffcc','#99ddff','#003366','#8c8c8c'],
 
       }
     },
     watch: {
-      bannerList:function(){
-
-      }
-
 
     },
     computed: {
@@ -131,44 +123,37 @@
 
     },
     mounted () {
+
       //取BANNER
       axios
         .get('api/banners?type=index')
         .then((response) => {
           if (response.data.code == "200") {
-
-              var h = document.documentElement.clientHeight || document.body.clientHeight;
-
-              this.curHeight =h -$('#header_div').height()-$('#search_div').height()-$('#bottom_div').height(); //减去页面上固定高度height
-             this.bannerList = response.data.data.list
-
-              console.log("mounted");
-              console.log("search_div:->"+$('#search_div').height());
-              console.log("curHeight:->"+this.curHeight);
-
-
+            // this.bannerList.push(response.data.data.list),
+            this.bannerList = response.data.data.list
           }
-
-          $("#occupation_banner").remove();
 
         })
         .catch(function (error) { // 请求失败处理
           console.log(error);
         });
 
-      this.indexGroups();
-      // window.addEventListener("scroll", this.handleScroll,true);
+
+      this.curHeight= document.documentElement.clientHeight || document.body.clientHeight;
       window.addEventListener("scroll",this.throttle(this.handleScroll,2000),true)
     },
     beforeDestroy() {
-
       window.removeEventListener('scroll', this.handleScroll,true)
     },
     beforeUpdate(){
-      console.log("beforeUpdate");
+
+
 
     },
     updated(){
+      var h = document.documentElement.clientHeight || document.body.clientHeight;
+
+      this.curHeight =h -$('#header_div').height()-$('#search_div').height()-$('#bottom_div').height()-35; //减去页面上固定高度height
 
     },
     methods: {
@@ -178,6 +163,7 @@
       setTimeout(function () {
       dom.slideUp(2000, function () {
         dom.remove();
+
       });
     }, 1 * 1000);//延迟5000
   },
@@ -224,33 +210,63 @@
         }
       },
 
-      indexGroups(){
+      searchGroups(event) {
 
+        if (this.keyword.length <= 0) {
+
+          $('#keyword').focus();
+
+          $('#errorTip').append('    <div id="msg_id_2" class="col-xl-12">   <span class="help-block alert-warning " > 请输入搜索关键字 </span></div>');
+
+          this.removeHtml($("#msg_id_2"))
+
+        } else{
         //取圈子列表,todo带TOKEN
         axios
-          .get('api/myGroups?page='+this.scrollPage)
+          .get('api/groups?keyword=' + this.keyword + '&page=' + this.scrollPage)
           .then((response) => {
             if (response.data.code == "200") {
 
 
-              this.groupCount =  response.data.data.list.length+this.groupList.length;
+              this.groupCount = response.data.data.list.length + this.groupList.length;
 
 
-              this.groupTotal=response.data.data.pagination.total
+              this.groupTotal = response.data.data.pagination.total
 
-              for(var i=0;i<response.data.data.list.length;i++){
+              for (var i = 0; i < response.data.data.list.length; i++) {
 
                 this.groupList.push(response.data.data.list[i]);
 
               }
 
 
-
-            }else if(response.data.code == "3000"){
-              this.pageFinish=1;
+            } else if (response.data.code == "3000") {
+              this.pageFinish = 1;
               this.scrollPage--;
-              console.log('没有更多数据了');
-              var htmlStr = '<div id="msg_id_1" class="bg-warning text-white" style="background-color:rgba(0,0,0,0);" role="alert"><strong>没有更多数据了</strong></div>'
+
+              if(event==undefined){
+                var htmlStr = '<div id="msg_id_1" class="bg-warning text-white" style="background-color:rgba(0,0,0,0);" role="alert"><strong>没有更多数据了</strong></div>'
+                $("#msg").append(htmlStr)
+                this.removeHtml($("#msg_id_1"))
+              }else if (event.key == 'Enter') {
+
+                this.groupList = [];
+                this.groupCount = 0;
+                this.groupTotal = 0;
+
+                $('#errorTip').append('     <div id="msg_id_2" class="col-xl-12">  <span class="help-block alert-warning " > 没找着~ </span></div>');
+                this.removeHtml($("#msg_id_2"))
+
+              }
+
+
+
+
+            } else if (response.data.code == "3003") {
+              this.pageFinish = 0;
+              this.scrollPage = 0;
+              console.log('请输入关键字');
+              var htmlStr = '<div id="msg_id_1" class="bg-warning text-white" style="background-color:rgba(0,0,0,0);" role="alert"><strong>请输入关键字</strong></div>'
               $("#msg").append(htmlStr)
               this.removeHtml($("#msg_id_1"))
             }
@@ -261,13 +277,9 @@
             console.log(error);
           });
 
-
+      }
       },
-      searchGroups(event){
 
-
-        this.$router.push({path:'/search',query:{}});
-      },
 
       handleScroll(event){
         //窗口滚要做的操作写这里
@@ -285,14 +297,12 @@
 
 
               if(this.pageFinish!=1){
+                this.scrollSearch=1;
                 this.scrollPage+=1;
-                if(this.keyword==''){
 
-                  this.indexGroups();
-                }else{
-                  this.searchGroups(event);
+                this.searchGroups();
 
-                }
+
               }
 
             }
@@ -315,14 +325,14 @@
   .msg {
     z-index:2;
     /*background-color: red;*/
-    width:  40%;
+    width:  100%;
     height: 50px;
 
     /*margin-bottom:0px;*/
     position: absolute;
     /*left: 140px;*/
     /*top: 0;*/
-    right: 30%;
+    right: 0;
     bottom: 50px;
     pointer-events: none;
 
