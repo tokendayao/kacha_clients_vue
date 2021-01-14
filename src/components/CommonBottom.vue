@@ -4,27 +4,44 @@
     <nav class="w-100  " style="">
       <ul id="group_list_ul" class="w-100 list-group list-group-horizontal-sm text-center" style="flex-direction: row;margin-left: 10px;padding-top: 0">
         <li class="list-group-item " style="width:33%"><a class="nav-link" href="/index">圈儿</a></li>
-        <div id="notice_count" class="badge badge-light notice_count">4</div>
 
-        <li class="list-group-item  " style="width:33%"><a class="nav-link" href="#" data-content="详情详情详情">信儿 </a></li>
-        <li class="list-group-item  " style="width:33%"><a class="nav-link " href="#">我的</a></li>
+
+        <li class="list-group-item  " style="width:33%"><a class="nav-link" href="/notice" data-content="详情详情详情">信儿   <span class="badge badge-danger notice_count" >4</span> </a></li>
+        <li class="list-group-item  " style="width:33%"><a class="nav-link "  :href=" [get_accessToken?'/my':'/login']">我的</a></li>
       </ul>
     </nav>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "CommonBottom"
+  import {mapGetters} from 'vuex';
+
+  export default {
+        name: "CommonBottom",
+      computed:{
+        ...mapGetters(["get_accessToken"])
+      },
+      methods:{
+        gotoMy(event){
+
+            if(this.get_accessToken){
+              this.$router.push('/my');
+
+            }else{
+              this.$router.push('/login');
+
+            }
+
+        }
+      }
     }
 </script>
 
 <style scoped="">
   .notice_count {
-    position:absolute;
-    padding-left: 53%;
+    position:absolute;;
     z-index: 1;
-    background-color:rgba(0,0,0,0);
+
 
   }
   .msg {

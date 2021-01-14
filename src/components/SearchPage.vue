@@ -30,6 +30,9 @@
           <div v-if="k&lt;(groupCount+1)" class="m-auto card text-white  mb-3" :style="{'max-width': '18rem','background-color':style_card[Math.floor(Math.random()*8 + 1)]}">
             <div class="card-header">
               {{ groupList[k-1].group_name }}
+              <div v-if="groupList[k-1].is_new_group "  style="z-index: 2;position: absolute;right:0;top:0" >
+                <img class="img-fluid" style="width: 36px;height:36px" src="../assets/icons/new.png"/>
+              </div>
             </div>
             <div class="card-body">
               <h5 class="card-title"> {{ groupList[k-1].group_slogan }}</h5>

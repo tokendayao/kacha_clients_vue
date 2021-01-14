@@ -34,17 +34,30 @@
 
     </div>
     <!--  搜索框 BANNER END   -->
-    <!--  圈子列表 START  :style="{'position':'relative','overflow':'auto','margin-top':'10px','height':curHeight+'px'}"-->
-    <div id="group_list" class="container " v-if="groupCount"  style="position: relative;margin-bottom: 25px">
+    <!--  圈子列表 START  -->
+    <div id="group_list" class="container " v-if="groupCount"   :style="{'position':'relative','overflow':'auto','margin-top':'10px','height':curHeight+'px'}">
       <div v-if="(n%2)!=0" class="row" v-for="n in  groupCount " style="position:relative;flex-wrap: nowrap;margin-top: 10px; " >
         <div class="col-xl-6  text-center" v-if="(n%2)!=0 &amp;&amp; (k&gt;=n)  " v-for="k in n+1" >
           <div v-if="k&lt;(groupCount+1)" class="m-auto card text-white  mb-3" :style="{'max-width': '18rem','background-color':style_card[Math.floor(Math.random()*8 + 1)]}">
-            <div class="card-header">
+
+            <div class="card-header w-100 ">
+
               {{ groupList[k-1].group_name }}
+              <div v-if="groupList[k-1].is_new_group "  style="z-index: 1;position: absolute;right:0;top:0" >
+
+                <img class="img-fluid" style="width: 36px;height:36px" src="../assets/icons/new.png"/>
+
+              </div>
             </div>
             <div class="card-body">
               <h5 class="card-title"> {{ groupList[k-1].group_slogan }}</h5>
-              <p class="card-text" ><img :src="['../static/'+groupList[k-1].group_logo_src]" class="w-100 img-fluid img-thumbnail" /></p>
+              <p class="card-text" >
+
+                  <a :href="'/groupDetail?gid='+groupList[k-1].group_id" >
+                <img :src="['../static/uploads/'+groupList[k-1].group_logo_src]" class="w-100 img-fluid img-thumbnail" />
+                </a>
+              </p>
+
             </div>
           </div>
           <div v-else="k&gt;=(groupCount+1)" class="" style="max-width: 18rem;">
@@ -60,11 +73,24 @@
       </div>
       <!-- 信息提示 END-->
 
-      <common-bottom></common-bottom>
     </div>
 
-    <!--  底部   start-->
+    <!--  新建圈子   start-->
 
+    <div style=" max-width:50px;max-height:50px;border-radius:5px;z-index:1;position:fixed;bottom:50px;margin-bottom: 50px;right:10px">
+    <a  href="/createGroup"  role="button" aria-pressed="true" >
+      <img src="../assets/icons/add.png" class="img-fluid w-100 h-100" >
+
+    </a>
+    </div>
+    <!--  新建圈子   end-->
+
+
+    <!--  底部   start-->
+    <div class="container" style="border-top: 1px gray solid ;  z-index:1;position:fixed;bottom:0;margin-bottom: 0;">
+      <common-bottom></common-bottom>
+
+    </div>
     <!--  底部  end -->
   </div>
 </template>
@@ -146,7 +172,9 @@
 
     },
     updated(){
+      var h = document.documentElement.clientHeight || document.body.clientHeight;
 
+      this.curHeight =h*0.7+15 ;
     },
     methods: {
 
@@ -282,7 +310,9 @@
   }
 </script>
 <style scoped="">
-
+  body{
+    height:102%;
+  }
   .msg {
     z-index:2;
     /*background-color: red;*/
