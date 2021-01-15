@@ -10,6 +10,8 @@ import NoticePage from '@/components/noticePage'   // add
 import MyCenter from '@/components/MyCenter'   // add
 import CreateGroup from '@/components/CreateGroup'   // add
 import GroupDetail from '@/components/GroupDetail'   // add
+import PostPunch from '@/components/PostPunch'   // add
+
 
 
 //获取原型对象上的push函数
